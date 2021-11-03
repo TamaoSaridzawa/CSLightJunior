@@ -10,7 +10,16 @@ namespace CSLightJunior
     {
         static void Main(string[] args)
         {
-
+            int score;
+            char symbol;
+            double percent;
+            bool openAccess;
+            String name;
+            String address;
+            int age;
+            short weekday;
+            bool startProgramming;
+            float remains;
         }
     }
 }
