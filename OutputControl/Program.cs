@@ -11,18 +11,13 @@ namespace OutputControl
         static void Main(string[] args)
         {
             String rightAnswer = "exit";
-            while (true)
+            String userAnswer = "";
+            while (rightAnswer != userAnswer)
             {
                 Console.Write("Введите правильный ответ для выхода: ");
-                String userAnswer = Console.ReadLine();
-                if (rightAnswer == userAnswer)
-                {
-                    Console.WriteLine("Правильный ответ!");
-                    break;
-                }
-                else
-                    Console.WriteLine("Ответ не верный попробуйте еще раз!");
+                userAnswer = Console.ReadLine();
             }
+            Console.WriteLine("Правильный ответ!");
             Console.ReadKey();
         }
     }
