@@ -10,21 +10,24 @@ namespace Converter
     {
         static void Main(string[] args)
         {
-            double balanceUsd = 5;
-            double balnceRub = 1850;
-            int balanceHryvnia = 16800;
-            int rubToUsd = 77;
+            double usd = 5;
+            double rub = 1850;
+            double hryvnia = 16800;
+            double usdToRub = 77;
             double hryvniaToRub = 2.7;
-            int usdToHryvnia = 26;
+            double usdToHryvnia = 26;
             String userInput = "";
-            int currencyCount;
+            double currencyCount;
 
             Console.WriteLine($"Вас приветствует программа конвертаци валют." +
-                $"\n Для перевода рублей в доллары нажмите :1\n Для перевода гривен в рубли нажмите :2\n Для перевода долларов в гривны нажмите :3\n Для выхода из программы нажмите :exit" );
+                $"\n Для перевода рублей в доллары нажмите :1 . Для перевода долларов в рубли нажмите :2" +
+                $"\n Для перевода рублей в гривны нажмите :3.Для перевода гривен в рубли нажмите :4\n" +
+                $"Для перевода гривен в доллары нажмите :5 . Для перевода долларов в гривны нажмите 6:" +
+                $"\n Для выхода из программы нажмите :exit" );
            
             while (userInput != "exit")
             {
-                Console.WriteLine($"Ваш баланс: рубли - {balnceRub} , доллары - {balanceUsd} , гривны - {balanceHryvnia}");
+                Console.WriteLine($"Ваш баланс: рубли - {rub} , доллары - {usd} , гривны - {hryvnia}");
                 userInput = Console.ReadLine();
 
                 switch (userInput)
@@ -33,10 +36,10 @@ namespace Converter
                         Console.Write("Сколько рублей вы хотите перести в доллары? ");
                         currencyCount = int.Parse(Console.ReadLine());
 
-                        if (balnceRub >= currencyCount)
+                        if (rub >= currencyCount)
                         {
-                            balanceUsd += Convert.ToDouble(currencyCount) / rubToUsd;
-                            balnceRub -= currencyCount;
+                            usd += Convert.ToDouble(currencyCount) / usdToRub;
+                            rub -= currencyCount;
                         }
                         else
                         {
@@ -44,13 +47,13 @@ namespace Converter
                         }
                         break;
                     case "2":
-                        Console.Write("Сколько гривен вы хотите перести в рубли? ");
+                        Console.Write("Сколько долларов вы хотите перести в рубли? ");
                         currencyCount = int.Parse(Console.ReadLine());
 
-                        if (balanceHryvnia >= currencyCount)
+                        if (usd >= currencyCount)
                         {
-                            balnceRub += currencyCount * hryvniaToRub;
-                            balanceHryvnia -= currencyCount;
+                            rub += Convert.ToDouble(currencyCount) * usdToRub;
+                            usd -= currencyCount;
                         }
                         else
                         {
@@ -58,13 +61,55 @@ namespace Converter
                         }
                         break;
                     case "3":
+                        Console.Write("Сколько рублей вы хотите перести в гривны? ");
+                        currencyCount = int.Parse(Console.ReadLine());
+
+                        if (rub >= currencyCount)
+                        {
+                            hryvnia += currencyCount / hryvniaToRub;
+                            rub -= currencyCount;
+                        }
+                        else
+                        {
+                            Console.WriteLine("У вас недостаточно средств");
+                        }
+                        break;
+                    case "4":
+                        Console.Write("Сколько гривен вы хотите перести в рубли? ");
+                        currencyCount = int.Parse(Console.ReadLine());
+
+                        if (hryvnia >= currencyCount)
+                        {
+                            rub += currencyCount * hryvniaToRub;
+                            hryvnia -= currencyCount;
+                        }
+                        else
+                        {
+                            Console.WriteLine("У вас недостаточно средств");
+                        }
+                        break;
+                    case "5":
+                        Console.Write("Сколько гривен вы хотите перести в доллары? ");
+                        currencyCount = int.Parse(Console.ReadLine());
+
+                        if (hryvnia >= currencyCount)
+                        {
+                            usd += currencyCount / usdToHryvnia;
+                            hryvnia -= currencyCount;
+                        }
+                        else
+                        {
+                            Console.WriteLine("У вас недостаточно средств");
+                        }
+                        break;
+                    case "6":
                         Console.Write("Сколько долларов вы хотите перести в гривны? ");
                         currencyCount = int.Parse(Console.ReadLine());
 
-                        if (balanceUsd >= currencyCount)
+                        if (usd >= currencyCount)
                         {
-                            balanceHryvnia += currencyCount * usdToHryvnia;
-                            balanceUsd -= currencyCount;
+                            hryvnia += currencyCount * usdToHryvnia;
+                            usd -= currencyCount;
                         }
                         else
                         {
@@ -80,7 +125,7 @@ namespace Converter
                 }
             }
 
-            Console.WriteLine($"Ваш баланс после выполненных операций: рубли - {balnceRub} , доллары - {balanceUsd} , гривны - {balanceHryvnia}");
+            Console.WriteLine($"Ваш баланс после выполненных операций: рубли - {rub} , доллары - {usd} , гривны - {hryvnia}");
             Console.ReadKey();
         }
     }
