@@ -18,6 +18,8 @@ namespace BossFight
             int numberOfTreatments = 2;
             bool heroRebound = false;
             bool knockedDown = false;
+            int maxProcentKnocked = 100;
+            int mimProcentForKnocked = 50;
             int bossHealth = 300;
             int bossAutoAttac = 20;
             int bossLightningStrike = 80;
@@ -30,8 +32,6 @@ namespace BossFight
             Console.Write("Вы готовы начать? Для старта нажмите 's':");
 
             string startGame = Console.ReadLine();
-
-            Console.WriteLine("Для выхода из игры нажмите 'e'");
 
             if (startGame == "s")
             {
@@ -53,11 +53,6 @@ namespace BossFight
                     Console.Write("Делайте ваш ход :");
                     string userInput = Console.ReadLine();
 
-                    if (userInput == "e")
-                    {
-                        break;
-                    }
-
                     switch (userInput)
                     {
                         case "1":
@@ -66,7 +61,7 @@ namespace BossFight
                             break;
                         case "2":
                             bossHealth -= heroOutOfBalance;
-                            knockedDown = 50 > rand.Next(0, 100);
+                            knockedDown = mimProcentForKnocked < rand.Next(maxProcentKnocked);
                             Console.WriteLine($"Вы нанесли {heroOutOfBalance} урона. Здоровье босса :{bossHealth} ед.");
                             if (knockedDown)
                             {
