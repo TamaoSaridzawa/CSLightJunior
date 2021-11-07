@@ -12,7 +12,9 @@ namespace PasswordProgramProtected
         {
             string pasword = "unity";
             int attempts = 0;
-            while (attempts < 3)
+            int maxAttempts = 3;
+
+            while (attempts < maxAttempts)
             {
                 Console.Write("Введите пароль для получения секретного сообщения:");
                 string userInput = Console.ReadLine();
