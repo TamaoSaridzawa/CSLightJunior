@@ -102,7 +102,7 @@ namespace BossFight
                                 bossHealth -= heroSlashingAttack;
                                 Console.WriteLine($"Вы нанесли {heroSlashingAttack} урона. Здоровье босса :{bossHealth} ед.");
                             }
-                            
+
                             break;
                         default:
                             Console.WriteLine("Нет умения на данной кнопке. Вы пропускаете ход!");
@@ -111,7 +111,7 @@ namespace BossFight
 
                     switch (bossSkil)
                     {
-                        
+
                         case 1:
 
                             if (heroRebound)
