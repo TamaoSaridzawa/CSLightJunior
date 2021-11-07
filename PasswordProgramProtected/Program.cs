@@ -11,10 +11,9 @@ namespace PasswordProgramProtected
         static void Main(string[] args)
         {
             string pasword = "unity";
-            int attempts = 0;
             int maxAttempts = 3;
 
-            while (attempts < maxAttempts)
+            for (int attempts = 0; attempts < maxAttempts; attempts++)
             {
                 Console.Write("Введите пароль для получения секретного сообщения:");
                 string userInput = Console.ReadLine();
@@ -29,7 +28,6 @@ namespace PasswordProgramProtected
                 else
                 {
                     Console.WriteLine("Неправильный пароль, попробуйте еще раз");
-                    attempts++;
                 }
             }
         }
