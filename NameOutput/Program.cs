@@ -10,6 +10,8 @@ namespace NameOutput
     {
         static void Main(string[] args)
         {
+            int rowWithName = 1;
+
             Console.Write("Введите имя :");
             string name = Console.ReadLine();
             Console.Write("Введите символ, из которого будет состоять рамка :");
@@ -17,18 +19,18 @@ namespace NameOutput
 
             for (int column = 0; column < 3; column++)
             {
-                for (int row = 0; row <= name.Length + 1; row++)
+                if (column == rowWithName)
                 {
-                    if (column == 1)
-                    {
-                        Console.Write($"{symbol}{name}{symbol}");
-                        break;
-                    }
-                    else
+                    Console.Write($"{symbol}{name}{symbol}");
+                }
+                else
+                {
+                    for (int row = 0; row <= name.Length + 1; row++)
                     {
                         Console.Write(symbol);
                     }
                 }
+
                 Console.WriteLine();
             }
 
