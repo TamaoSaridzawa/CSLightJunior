@@ -10,31 +10,26 @@ namespace NameOutput
     {
         static void Main(string[] args)
         {
-            int rowWithName = 1;
-
             Console.Write("Введите имя :");
             string name = Console.ReadLine();
+
             Console.Write("Введите символ, из которого будет состоять рамка :");
             string symbol = Console.ReadLine();
 
-            for (int column = 0; column < 3; column++)
-            {
-                if (column == rowWithName)
-                {
-                    Console.Write($"{symbol}{name}{symbol}");
-                }
-                else
-                {
-                    for (int row = 0; row <= name.Length + 1; row++)
-                    {
-                        Console.Write(symbol);
-                    }
-                }
+            name = symbol + name + symbol;
+            string frame = "";
 
-                Console.WriteLine();
-            }
+            for (int row = 0; row < name.Length; row++)
+            {
+                frame += symbol;
+            }                     
+
+            Console.WriteLine(frame);
+            Console.WriteLine(name);
+            Console.WriteLine(frame);
 
             Console.ReadKey();
         }
     }
 }
+
