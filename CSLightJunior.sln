@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LargestElement", "LargestEl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalMax", "LocalMax\LocalMax.csproj", "{F369550C-8972-4210-90D5-CE6441180273}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicArray", "DynamicArray\DynamicArray.csproj", "{04C0B84A-9E5F-4D96-A02C-FCD766110231}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{F369550C-8972-4210-90D5-CE6441180273}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F369550C-8972-4210-90D5-CE6441180273}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F369550C-8972-4210-90D5-CE6441180273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C0B84A-9E5F-4D96-A02C-FCD766110231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C0B84A-9E5F-4D96-A02C-FCD766110231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C0B84A-9E5F-4D96-A02C-FCD766110231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C0B84A-9E5F-4D96-A02C-FCD766110231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{89C4E503-D36A-4B88-9E6C-D4D43FE9A43D} = {C7836566-A6A1-4A7B-8A5F-837EAF83FA05}
 		{163152E1-6B11-4C16-888C-3AEA636685FF} = {C7836566-A6A1-4A7B-8A5F-837EAF83FA05}
 		{F369550C-8972-4210-90D5-CE6441180273} = {C7836566-A6A1-4A7B-8A5F-837EAF83FA05}
+		{04C0B84A-9E5F-4D96-A02C-FCD766110231} = {C7836566-A6A1-4A7B-8A5F-837EAF83FA05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BAD97B5-5ACF-48F0-A176-22661F004D36}
