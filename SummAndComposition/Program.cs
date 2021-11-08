@@ -24,17 +24,26 @@ namespace SummAndComposition
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    if (i == 1)
-                    {
-                        summTwoLine += array[i, j];
-                    }
-                    if (j == 0)
-                    {
-                        compositionOneColumn *= array[i, j];
-                    }
                     Console.Write(array[i,j] + " ");
                 }
                 Console.WriteLine();
+            }
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {           
+                    if (i != 1)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        summTwoLine += array[i, j];
+                    }
+                }
+
+                compositionOneColumn *= array[i, 0];
             }
 
             Console.WriteLine($"Сумма второй строки = {summTwoLine}, Произведение первого столбца = {compositionOneColumn}");
