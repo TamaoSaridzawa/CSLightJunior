@@ -15,20 +15,24 @@ namespace BossFight
             int heroSlashingAttack = 30;
             int heroOutOfBalance = 10;
             int heroFinishingBlow = 40;
-            int numberOfTreatments = 2;
+            int doubleFinishingBlow = heroFinishingBlow * 2;
+            int numberOfTreatments = 4;
+            double percentageHealthRecovery = 50;
             bool heroRebound = false;
             bool knockedDown = false;
             int maxProcentKnocked = 100;
             int mimProcentForKnocked = 50;
             int bossHealth = 300;
             int bossAutoAttac = 20;
+            int enrageOfAutoAttac = bossAutoAttac * 2;
             int bossLightningStrike = 80;
+            int enrageLightningStrike = bossLightningStrike * 2;
             bool bossEnrage = false;
 
             Console.WriteLine("Вас приветствует пошаговая игра 'Figth Arena'. Вам предстоит сразится с боссом 1х1 и победить!");
-            Console.WriteLine("Управление :\n 1 - Рубящая атака, наносит 30 урона\n 2 - Удар в колено, наносит 10 урона , с шансом в 50% выводит из равновесия и сбивает с ног" +
-                "\n 3 - Завершающий удар, наносит 40 урона, если цель сбита с ног наносит двойной урон\n 4 - Отскок, вы отпрыгиваете в сторону" +
-                "\n 5 - Залечить раны, восстанавливаете 50% здоровье от недостающего . Доступно 2 лечения");
+            Console.WriteLine($"Управление :\n 1 - Рубящая атака, наносит {heroSlashingAttack} урона\n 2 - Удар в колено, наносит {heroOutOfBalance} урона , с шансом в {mimProcentForKnocked}% выводит из равновесия и сбивает с ног" +
+                $"\n 3 - Завершающий удар, наносит {heroFinishingBlow} урона, если цель сбита с ног наносит {doubleFinishingBlow} урона\n 4 - Отскок, вы отпрыгиваете в сторону" +
+                $"\n 5 - Залечить раны, восстанавливаете {percentageHealthRecovery}% здоровье от недостающего . Доступно {numberOfTreatments} лечения");
             Console.Write("Вы готовы начать? Для старта нажмите 's':");
 
             string startGame = Console.ReadLine();
@@ -73,9 +77,9 @@ namespace BossFight
 
                             if (knockedDown)
                             {
-                                bossHealth -= heroFinishingBlow * 2;
+                                bossHealth -= doubleFinishingBlow;
                                 knockedDown = false;
-                                Console.WriteLine($"Вы нанесли {heroFinishingBlow * 2} урона. Здоровье босса :{bossHealth} ед.");
+                                Console.WriteLine($"Вы нанесли {doubleFinishingBlow} урона. Здоровье босса :{bossHealth} ед.");
                             }
                             else
                             {
@@ -91,7 +95,7 @@ namespace BossFight
 
                             if (numberOfTreatments > 0)
                             {
-                                double heroHealWounds = (heroMaxHealth - heroHealth) / 2;
+                                double heroHealWounds = (heroMaxHealth - heroHealth) / 100 * percentageHealthRecovery;
                                 heroHealth += heroHealWounds;
                                 numberOfTreatments--;
                                 Console.WriteLine($"Вы восстановили {heroHealWounds}ед. здоровья.Ваше здоровье :{heroHealth} ед. Осталось лечений {numberOfTreatments}");
@@ -111,7 +115,6 @@ namespace BossFight
 
                     switch (bossSkil)
                     {
-
                         case 1:
 
                             if (heroRebound)
@@ -123,8 +126,8 @@ namespace BossFight
                             {
                                 if (bossEnrage)
                                 {
-                                    heroHealth -= bossLightningStrike * 2;
-                                    Console.WriteLine($"Вам нанесли {bossLightningStrike * 2} урона молнией. Ваше здоровье :{heroHealth} ед.");
+                                    heroHealth -= enrageLightningStrike;
+                                    Console.WriteLine($"Вам нанесли {enrageLightningStrike} урона молнией. Ваше здоровье :{heroHealth} ед.");
                                 }
                                 else
                                 {
@@ -137,8 +140,8 @@ namespace BossFight
 
                             if (bossEnrage)
                             {
-                                heroHealth -= bossAutoAttac * 2;
-                                Console.WriteLine($"Вам нанесли {bossAutoAttac * 2} урона. Ваше здоровье :{heroHealth} ед.");
+                                heroHealth -= enrageOfAutoAttac;
+                                Console.WriteLine($"Вам нанесли {enrageOfAutoAttac} урона. Ваше здоровье :{heroHealth} ед.");
                             }
                             else
                             {
@@ -149,7 +152,11 @@ namespace BossFight
                     }
                 }
 
-                if (bossHealth <= 0)
+                if (bossHealth <= 0 && heroHealth <= 0)
+                {
+                    Console.WriteLine("Ничья : в этой битве пали оба бойца");
+                }
+                else if (bossHealth <= 0)
                 {
                     Console.WriteLine("Вы победили!");
                 }
