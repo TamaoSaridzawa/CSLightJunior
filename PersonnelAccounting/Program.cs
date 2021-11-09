@@ -59,17 +59,32 @@ namespace PersonnelAccounting
             return array;
         }
 
-        static string[] ReduceArray( string[] array, int index)
+        static string[] ReduceArray(string[] array, int index)
         {
             string[] tempArray = new string[array.Length - 1];
+            index--;
 
             for (int i = 0; i < tempArray.Length; i++)
             {
-                if (i != index)
+                if (i < index)
                 {
                     tempArray[i] = array[i];
                 }
+                else
+                {
+                    tempArray[i] = array[i + 1];
+                }
             }
+
+            //for (int i = 0; i < index; i++)
+            //{
+            //    tempArray[i] = array[i];
+            //}
+            //for (int i = index; i < tempArray.Length; i++)
+            //{
+            //    tempArray[i] = array[i + 1];
+            //}
+          
             array = tempArray;
             return array;
         }
@@ -121,22 +136,30 @@ namespace PersonnelAccounting
         {
             int numberFound = 0;
 
-            Console.Write("Введите фамилию для поиска сотрудника(ов) :");
-            string userName = Console.ReadLine();
-
-            for (int i = 0; i < patronymics.Length; i++)
+            if (patronymics.Length <= 0)
             {
-                if (patronymics[i].ToLower().Contains(userName.ToLower()))
+                Console.WriteLine("В базе данных нет пользователей!");
+            }
+            else
+            {
+                Console.Write("Введите фамилию для поиска сотрудника(ов) :");
+                string userName = Console.ReadLine();
+
+                for (int i = 0; i < patronymics.Length; i++)
                 {
-                    Console.WriteLine($"Информация о введенной фамилии - {patronymics[i]}, {posts[i]} ");
-                    numberFound++;
+                    if (patronymics[i].ToLower().Contains(userName.ToLower()))
+                    {
+                        Console.WriteLine($"Информация о введенной фамилии - {patronymics[i]}, {posts[i]} ");
+                        numberFound++;
+                    }
+                }
+
+                if (numberFound <= 0)
+                {
+                    Console.WriteLine("Пользователь с такой фамилией не найден");
                 }
             }
-
-            if (numberFound <= 0)
-            {
-                Console.WriteLine("Пользователь с такой фамилией не найден");
-            }
+            
         }
     }
 }
