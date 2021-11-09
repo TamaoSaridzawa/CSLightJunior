@@ -10,11 +10,12 @@ namespace PersonnelAccounting
     {
         static void Main(string[] args)
         {
-            string[] initials = new string[0];
-            string[] post = new string[0];
+            string[] patronymics = new string[0];
+            string[] posts = new string[0];
             string userInput = "";
 
             Console.WriteLine("Меню :");
+
             while (userInput != "5")
             {
                 Console.WriteLine($"1) добавить досье\n2) Вывысти все досье\n3) Удалить досье\n4) Поиск по фамилии\n5) Выход");
@@ -23,19 +24,16 @@ namespace PersonnelAccounting
                 switch (userInput)
                 {
                     case "1":
-                        AddDosier(ref initials,ref post);
-                        Console.WriteLine("Пользователь добавлен!");
+                        AddDosier(ref patronymics,ref posts);
                         break;
                     case "2":
-                        OutputDossier(initials, post);
+                        OutputDossier(patronymics, posts);
                         break;
                     case "3":
-                        RemoveDosier(ref initials, ref post);
+                        RemoveDosier(ref patronymics, ref posts);
                         break;
                     case "4":
-                        Console.Write("Введите фамилию для поиска сотрудника(ов) :");
-                        string userAnser = Console.ReadLine();
-                        SearchSurname(initials, post, userAnser);
+                        SearchSurname(patronymics, posts);
                         break;
                     case "5":
                         break;
@@ -61,23 +59,25 @@ namespace PersonnelAccounting
             return array;
         }
 
-        static string[] ReducingArray( string[] array)
+        static string[] ReduceArray( string[] array, int index)
         {
             string[] tempArray = new string[array.Length - 1];
 
             for (int i = 0; i < tempArray.Length; i++)
             {
-                tempArray[i] = array[i];
+                if (i != index)
+                {
+                    tempArray[i] = array[i];
+                }
             }
-
             array = tempArray;
             return array;
         }
 
-        static void AddDosier(ref string[] initials,ref string[] post)
+        static void AddDosier(ref string[] patronymics,ref string[] posts)
         {
-            initials = ExpandArray(initials);
-            post = ExpandArray(post);
+            patronymics = ExpandArray(patronymics);
+            posts = ExpandArray(posts);
 
             Console.Write("Введите инициалы :");
             string inputInitial = Console.ReadLine();
@@ -85,42 +85,31 @@ namespace PersonnelAccounting
             Console.Write("Введите должность :");
             string inputPost = Console.ReadLine();
 
-            initials[initials.Length - 1] = inputInitial;
-            post[post.Length - 1] = inputPost;
+            patronymics[patronymics.Length - 1] = inputInitial;
+            posts[posts.Length - 1] = inputPost;
+
+            Console.WriteLine("Пользователь добавлен!");
         }
 
-        static void OutputDossier(string[] initials, string[] post)
+        static void OutputDossier(string[] patronymics, string[] posts)
         {
-            for (int i = 0; i < initials.Length; i++)
+            for (int i = 0; i < patronymics.Length; i++)
             {
-                Console.WriteLine($"{i + 1} - {initials[i]} , {post[i]}");
+                Console.WriteLine($"{i + 1} - {patronymics[i]} , {posts[i]}");
             }
         }
 
-        static void RemoveDosier(ref string[] initials, ref string[] post)
+        static void RemoveDosier(ref string[] patronymics, ref string[] posts)
         {
             Console.Write("Введите порядковый номер человека, чье досье вы хотите удалить :");
-            int userAnswer = int.Parse(Console.ReadLine());
+            int index = int.Parse(Console.ReadLine());
 
-            if (userAnswer - 1 < initials.Length)
+            if (index <= patronymics.Length && index > 0)
             {
-                for (int i = 0; i < initials.Length; i++)
-                {
-                    if (i == userAnswer - 1)
-                    {
-                        for (int j = i; j < initials.Length - 1; j++)
-                        {
-                            initials[j] = initials[j + 1];
-                            post[j] = post[j + 1];
-                        }
+                patronymics = ReduceArray(patronymics, index);
+                posts = ReduceArray(posts, index);
 
-                        initials = ReducingArray(initials);
-                        post = ReducingArray(post);
-
-                        Console.WriteLine("Пользователь удален");
-                        break;
-                    }
-                }
+                Console.WriteLine("Пользователь удален");
             }
             else
             {
@@ -128,15 +117,18 @@ namespace PersonnelAccounting
             }
         }
 
-        static void SearchSurname(string[] initials, string[] post, string surname)
+        static void SearchSurname(string[] patronymics, string[] posts)
         {
             int numberFound = 0;
 
-            for (int i = 0; i < initials.Length; i++)
+            Console.Write("Введите фамилию для поиска сотрудника(ов) :");
+            string userName = Console.ReadLine();
+
+            for (int i = 0; i < patronymics.Length; i++)
             {
-                if (initials[i].ToLower().Contains(surname.ToLower()))
+                if (patronymics[i].ToLower().Contains(userName.ToLower()))
                 {
-                    Console.WriteLine($"Информация о введенной фамилии - {initials[i]}, {post[i]} ");
+                    Console.WriteLine($"Информация о введенной фамилии - {patronymics[i]}, {posts[i]} ");
                     numberFound++;
                 }
             }
