@@ -64,26 +64,14 @@ namespace PersonnelAccounting
             string[] tempArray = new string[array.Length - 1];
             index--;
 
-            for (int i = 0; i < tempArray.Length; i++)
+            for (int i = 0; i < index; i++)
             {
-                if (i < index)
-                {
-                    tempArray[i] = array[i];
-                }
-                else
-                {
-                    tempArray[i] = array[i + 1];
-                }
+                tempArray[i] = array[i];
             }
-
-            //for (int i = 0; i < index; i++)
-            //{
-            //    tempArray[i] = array[i];
-            //}
-            //for (int i = index; i < tempArray.Length; i++)
-            //{
-            //    tempArray[i] = array[i + 1];
-            //}
+            for (int i = index; i < tempArray.Length; i++)
+            {
+                tempArray[i] = array[i + 1];
+            }
           
             array = tempArray;
             return array;
