@@ -10,16 +10,15 @@ namespace UiElement
     {
         static void Main(string[] args)
         {
+            string nameBarHealth = "HP";
+            string nameBarMana = "MP";
+            bool cycleOperation = true;
+
             Console.Write("Введите максимальное количество здоровья :");
             double maxHealth = double.Parse(Console.ReadLine());
 
             Console.Write("Введите максимальное количество маны :");
             double maxMana = double.Parse(Console.ReadLine());
-
-            string nameBarHealth = "HP";
-            string nameBarMana = "MP";
-
-            bool cycleOperation = true;
 
             while (cycleOperation)
             {
@@ -36,10 +35,9 @@ namespace UiElement
                 DrawBar(nameBarHealth ,maxHealth, procentHealth, '♥', 0, 0);
                 DrawBar(nameBarMana ,maxMana, procentMana, '@', 0, 1, ConsoleColor.Blue);
             }
-          
         }
 
-        static void DrawBar(string nameBar ,double maxValue, double procent, char symbol,int positionX, int positionY, ConsoleColor color = ConsoleColor.Black)
+        static void DrawBar(string nameBar ,double maxValue, double procent, char symbol, int positionX, int positionY, ConsoleColor color = ConsoleColor.Black)
         {
             ConsoleColor defaultColor = ConsoleColor.Black;
             ConsoleColor defaultGround = Console.ForegroundColor;
@@ -50,7 +48,6 @@ namespace UiElement
             Console.ForegroundColor = ConsoleColor.Green;
   
             Console.SetCursorPosition(positionX, positionY);
-
 
             Console.Write(nameBar +":");
 
@@ -96,9 +93,5 @@ namespace UiElement
 
             Console.Write(bar + "]");
         }
-        
-
-
-
     }
 }
