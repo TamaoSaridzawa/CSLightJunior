@@ -16,7 +16,12 @@ namespace UiElement
             Console.Write("Введите максимальное количество маны :");
             double maxMana = double.Parse(Console.ReadLine());
 
-            while (true)
+            string nameBarHealth = "HP";
+            string nameBarMana = "MP";
+
+            bool cycleOperation = true;
+
+            while (cycleOperation)
             {
                 Console.SetCursorPosition(0, 2);
 
@@ -28,29 +33,24 @@ namespace UiElement
 
                 Console.Clear();
 
-                DravBar(maxHealth, procentHealth, '♥');
-                DravBar(maxMana, procentMana, '@', ConsoleColor.Blue);
+                DrawBar(nameBarHealth ,maxHealth, procentHealth, '♥', 0, 0);
+                DrawBar(nameBarMana ,maxMana, procentMana, '@', 0, 1, ConsoleColor.Blue);
             }
           
         }
 
-        static void DravBar(double maxValue, double procent, char symbol, ConsoleColor color = ConsoleColor.Black)
+        static void DrawBar(string nameBar ,double maxValue, double procent, char symbol,int positionX, int positionY, ConsoleColor color = ConsoleColor.Black)
         {
             ConsoleColor defaultColor = ConsoleColor.Black;
             ConsoleColor defaultGround = Console.ForegroundColor;
             int maxProcent = 100;
             string bar = "";
-            string nameBar = "HP";
             double percentagesInNumber = (maxValue / maxProcent) * procent;
 
             Console.ForegroundColor = ConsoleColor.Green;
-            
+  
+            Console.SetCursorPosition(positionX, positionY);
 
-            if (symbol == '@')
-            {
-                nameBar = "MP";
-                Console.SetCursorPosition(0, 1);
-            }
 
             Console.Write(nameBar +":");
 
