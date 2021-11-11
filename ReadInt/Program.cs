@@ -10,37 +10,35 @@ namespace ReadInt
     {
         static void Main(string[] args)
         {
-            int number = ConvertString(out number);
+           int number = 0;
+           int result = Convert(number);
 
-            Console.WriteLine($"Введенное число :{number}");
+            Console.WriteLine($"Введенное число :{result}");
 
             Console.ReadLine();
         }
 
-        static int ConvertString(out int number)
+        static int Convert(int number)
         {
-            number = 0;
             bool success = false;
+            string userInput ="";
 
-            while (!success)
+            while (success == false)
             {
                 Console.Write("Введите число для конвертации :");
-                string userInput = Console.ReadLine();
+                userInput = Console.ReadLine();
 
-               success = int.TryParse(userInput, out number);
+                success = int.TryParse(userInput,out number);
 
-                if (success)
-                {
-                    number = int.Parse(userInput);
-                    Console.WriteLine("Конвертация прошла успешно");
-                }
-                else
+                if (success == false)
                 {
                     Console.WriteLine("Ошибка конвертации, попробуйте еще раз");
                 }
             }
 
-            return number;
+            Console.WriteLine("Конвертация прошла успешно");
+
+            return int.Parse(userInput);
         }
     }
 }
