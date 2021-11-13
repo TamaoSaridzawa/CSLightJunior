@@ -10,18 +10,18 @@ namespace ReadInt
     {
         static void Main(string[] args)
         {
-           int number = 0;
-           int result = Convert(number);
+           int result = GetNumber();
 
             Console.WriteLine($"Введенное число :{result}");
 
             Console.ReadLine();
         }
 
-        static int Convert(int number)
+        static int GetNumber()
         {
+            int number = 0;
             bool success = false;
-            string userInput ="";
+            string userInput;
 
             while (success == false)
             {
@@ -38,7 +38,7 @@ namespace ReadInt
 
             Console.WriteLine("Конвертация прошла успешно");
 
-            return int.Parse(userInput);
+            return number;
         }
     }
 }
