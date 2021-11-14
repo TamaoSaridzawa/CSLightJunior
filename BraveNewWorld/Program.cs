@@ -11,89 +11,56 @@ namespace BraveNewWorld
     {
         static void Main(string[] args)
         {
-            
             Console.CursorVisible = false;
-            int potion = 0;
-            char figureSnake = '@';
-            char figurePotion = '*';
 
+            char figureHero = '@';
+            char figurePotion = '*';
+            char figureHunter = '!';
+            int potion = 0;
+            int positionHeroX, positionHeroY;
+            int HeroDX = 0; 
+            int HeroDY = 1;
             int positionHunterX = 0;
             int positionHunterY = 0;
-            char figureHunter = '!';
-            bool plaing = true;
-            int snakeX, snakeY;
-
             int positionPotionX = 0;
             int positionPotionY = 0;
-
+            int numberPotionHints = 15;
+            bool plaing = true;
             int potionEnrage = 0;
             int maxKillHunter = 2;
-            Console.WriteLine($"Вас приветствует игра 'Охотник или жертва?' Правила игры : Вас бросили в комнату, где нужно искать подсказки, с каждой подсказкой появляются охотники: '!'. Им нельзя попадаться." +
-                $" В каждой пятнадцатой подсказке лежит элексир бешенства, под действием которого вы можете убить {maxKillHunter} охотников. Для использования зелья нажмите 's'");
+            
+            Console.WriteLine($"Вас приветствует игра 'Охотник или жертва?'\n Правила игры : Вас бросили в комнату, где нужно искать подсказки, с каждой подсказкой появляются охотники: '!'. Им нельзя попадаться." +
+                $" \nВ каждой пятнадцатой подсказке лежит элексир бешенства, под действием которого вы можете убить {maxKillHunter} охотников. Для использования зелья нажмите 's'");
             Console.Write("Нажмите людую клавиша для начала игры :");
-            Console.ReadKey();
-            Console.Clear();
-            int snakeDX = 0, snakeDY = 1;
 
-            char[,] map = ReadMap("map1", out snakeX, out snakeY);
-           // Random rand = new Random();
-           
-            //GenerateCoordinate(ref positionHunterX, ref positionHunterY, map);
-           // int positionCharX = rand.Next(1, map.GetLength(0) - 2);
-           // int positionCharY = rand.Next(1, map.GetLength(1) - 2);
+            Console.ReadKey();
+
+            Console.Clear();
+
+            Random rand = new Random();
+
+            char[,] map = ReadMap("map1", out positionHeroX, out positionHeroY);
 
             DrawMap(map);
 
-            GenerateCoordinate(ref positionPotionX,ref positionPotionY, figurePotion, map);
-            //map[positionPotionX, positionPotionY] = figureEat;
-            //Console.SetCursorPosition(positionPotionY, positionPotionX);
-            //Console.Write(map[positionPotionX, positionPotionY]);
+            DrawFigure(rand, ref positionPotionX, ref positionPotionY, figurePotion, map); 
 
             while (plaing)
             {
-                Console.SetCursorPosition(snakeY, snakeX);
-                Console.Write(figureSnake);
+                DrawHero(positionHeroY, positionHeroX, figureHero); 
 
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
 
-                    switch (key.Key)
-                    {
-                        case ConsoleKey.UpArrow :
-                            snakeDX = -1; snakeDY = 0;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            snakeDX = 1; snakeDY = 0;
-                            break;
-                        case ConsoleKey.LeftArrow:
-                            snakeDX = 0; snakeDY = -1;
-                            break;
-                        case ConsoleKey.RightArrow:
-                            snakeDX = 0; snakeDY = 1;
-                            break;
-                        case ConsoleKey.S:
-                            if (potionEnrage > 0)
-                            {
-                                potionEnrage--;
-                                Console.ForegroundColor = ConsoleColor.Red;
-                            }
-                            break;
-                    }
+                    Move(key, ref HeroDX, ref HeroDY,ref potionEnrage);
                 }
 
-                if (map[snakeX + snakeDX, snakeY + snakeDY] == '#' || map[snakeX + snakeDX, snakeY + snakeDY] == figureHunter)
+                if (map[positionHeroX + HeroDX, positionHeroY + HeroDY] == '#' || map[positionHeroX + HeroDX, positionHeroY + HeroDY] == figureHunter)
                 {
                     if (Console.ForegroundColor == ConsoleColor.Red && maxKillHunter > 0)
                     {
-                        map[snakeX + snakeDX, snakeY + snakeDY] = ' ';
-                        maxKillHunter--;
-                        potion++;
-                        if (maxKillHunter == 0)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            maxKillHunter = 2;
-                        }
+                        ContinueGame(ref positionHeroX, ref positionHeroY, HeroDX, HeroDY, ref potion, ref maxKillHunter, map); 
                     }
                     else
                     {
@@ -103,60 +70,50 @@ namespace BraveNewWorld
                 }
                 else
                 {
-                    if (map[snakeX + snakeDX, snakeY + snakeDY] == figurePotion) // здесь косяк
+                    if (map[positionHeroX + HeroDX, positionHeroY + HeroDY] == figurePotion) 
                     {
-                        GenerateCoordinate(ref positionHunterX,ref positionHunterY, figureHunter, map); // Эта функция в дебаге рисует, в программе нет.
-                        //map[positionHunterX, positionHunterY] = figureHunter;
-                        //Console.SetCursorPosition(positionHunterY, positionHunterX);
-                        //Console.Write(map[positionHunterX,positionHunterY]);
-                        map[positionPotionX, positionPotionY] = ' ';
-                        GenerateCoordinate(ref positionPotionX, ref positionPotionY, figurePotion, map); // Эта функция работает и в дебаге и в программе.
-                        
+                        DrawFigure(rand, ref positionHunterX, ref positionHunterY, figureHunter, map); 
 
-                       
-                        //map[positionPotionX, positionPotionY] = figureEat;
-                        //Console.SetCursorPosition(positionPotionY, positionPotionX);
-                        //Console.Write(map[positionPotionX, positionPotionY]);
+                        map[positionPotionX, positionPotionY] = ' ';
+
+                        DrawFigure(rand, ref positionPotionX, ref positionPotionY, figurePotion, map); 
 
                         potion++;
-                        if (potion % 15 == 0)
+
+                        if (potion % numberPotionHints == 0)
                         {
                             potionEnrage++;
-                            Console.SetCursorPosition(0, 26);
-                            Console.Write($"Зелей в сумке : {potionEnrage}");
+
+                            DrawHints(ref potionEnrage);
                         }
                     }
 
-                    Console.SetCursorPosition(snakeY, snakeX);
-                    Console.Write(" ");
-                    snakeX += snakeDX;
-                    snakeY += snakeDY;
+                    ChangeCoordinate(ref positionHeroX, ref positionHeroY, HeroDX, HeroDY); 
 
-                    Console.SetCursorPosition(snakeY, snakeX);
-                    Console.Write(figureSnake);
+                    DrawHero(positionHeroY, positionHeroX, figureHero);
                 }
 
-                System.Threading.Thread.Sleep(200);
+                System.Threading.Thread.Sleep(150);
 
                 Console.SetCursorPosition(0, 25);
-                Console.WriteLine($"Количество съеденной пищи :{potion}");
+                Console.WriteLine($"Количество найденных подсказок :{potion}");
             }
         }
 
-        static void DrawMap(char[,] map)
+        static void DrawMap(char[,] map)  
         {
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 for (int j = 0; j < map.GetLength(1); j++)
                 {
-                    Console.Write(map[i,j]);
+                    Console.Write(map[i, j]);
                 }
 
                 Console.WriteLine();
             }
         }
 
-        static char[,] ReadMap (string mapName, out int snakeX, out int snakeY)
+        static char[,] ReadMap(string mapName, out int snakeX, out int snakeY)
         {
             snakeX = 1;
             snakeY = 1;
@@ -170,18 +127,80 @@ namespace BraveNewWorld
                     map[i, j] = newFile[i][j];
                 }
             }
-
             return map;
         }
 
-        static void GenerateCoordinate (ref int x,ref int y, char figure, char[,] map) // функция рисует либо символ охотника либо символ подсказки
+        static void DrawFigure(Random rand, ref int x, ref int y, char figure, char[,] map) // отрисовывает фигуру охотника или подсказки
         {
-            Random rand = new Random();
             x = rand.Next(1, map.GetLength(0) - 2);
             y = rand.Next(1, map.GetLength(1) - 2);
             map[x, y] = figure;
+
             Console.SetCursorPosition(y, x);
             Console.Write(map[x, y]);
+        }
+
+        static void Move(ConsoleKeyInfo key, ref int x, ref int y, ref int potionEnrage)
+        {
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    x = -1; y = 0;
+                    break;
+                case ConsoleKey.DownArrow:
+                    x = 1; y = 0;
+                    break;
+                case ConsoleKey.LeftArrow:
+                    x = 0; y = -1;
+                    break;
+                case ConsoleKey.RightArrow:
+                    x = 0; y = 1;
+                    break;
+                case ConsoleKey.S:
+
+                    if (potionEnrage > 0)
+                    {
+                        potionEnrage--;
+
+                        DrawHints(ref potionEnrage);
+
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    break;
+            }
+        }
+
+        static void DrawHero(int y, int x, char figure)  // отрисовывает фигуру героя
+        {
+            Console.SetCursorPosition(y, x);
+            Console.Write(figure);
+        }
+
+        static void ChangeCoordinate(ref int x,ref int y,int dX, int dY) // изменяет координаты фигуры
+        {
+            Console.SetCursorPosition(y, x);
+            Console.Write(" ");
+            x += dX;
+            y += dY;
+        }
+
+        static void ContinueGame(ref int x , ref int y, int dX, int dY,ref int potion,ref int maxKillHunter, char[,] map) // подолжает игру, если игрок под бешенством
+        {
+            map[x + dX, y + dY] = ' ';
+            maxKillHunter--;
+            potion++;
+
+            if (maxKillHunter == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                maxKillHunter = 2;
+            }
+        }
+
+        static void DrawHints(ref int potionEnrage) // отрисовывает подсказку о количесте зелей в сумке
+        {
+            Console.SetCursorPosition(0, 26);
+            Console.Write($"Зелей в сумке : {potionEnrage}");
         }
     }
 }
