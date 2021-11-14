@@ -13,13 +13,18 @@ namespace BraveNewWorld
         {
             
             Console.CursorVisible = false;
-            int eatNumber = 0;
+            int potion = 0;
             char figureSnake = '@';
-            char figureEat = '*';
+            char figurePotion = '*';
 
+            int positionHunterX = 0;
+            int positionHunterY = 0;
             char figureHunter = '!';
             bool plaing = true;
             int snakeX, snakeY;
+
+            int positionPotionX = 0;
+            int positionPotionY = 0;
 
             int potionEnrage = 0;
             int maxKillHunter = 2;
@@ -31,16 +36,18 @@ namespace BraveNewWorld
             int snakeDX = 0, snakeDY = 1;
 
             char[,] map = ReadMap("map1", out snakeX, out snakeY);
-            Random rand = new Random();
-
-            int positionCharX = rand.Next(1, map.GetLength(0) - 2);
-            int positionCharY = rand.Next(1, map.GetLength(1) - 2);
+           // Random rand = new Random();
+           
+            //GenerateCoordinate(ref positionHunterX, ref positionHunterY, map);
+           // int positionCharX = rand.Next(1, map.GetLength(0) - 2);
+           // int positionCharY = rand.Next(1, map.GetLength(1) - 2);
 
             DrawMap(map);
 
-            map[positionCharX, positionCharY] = figureEat;
-            Console.SetCursorPosition(positionCharY, positionCharX);
-            Console.Write(map[positionCharX, positionCharY]);
+            GenerateCoordinate(ref positionPotionX,ref positionPotionY, figurePotion, map);
+            //map[positionPotionX, positionPotionY] = figureEat;
+            //Console.SetCursorPosition(positionPotionY, positionPotionX);
+            //Console.Write(map[positionPotionX, positionPotionY]);
 
             while (plaing)
             {
@@ -81,7 +88,7 @@ namespace BraveNewWorld
                     {
                         map[snakeX + snakeDX, snakeY + snakeDY] = ' ';
                         maxKillHunter--;
-                        eatNumber++;
+                        potion++;
                         if (maxKillHunter == 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Gray;
@@ -96,21 +103,23 @@ namespace BraveNewWorld
                 }
                 else
                 {
-                    if (map[snakeX + snakeDX, snakeY + snakeDY] == figureEat)
+                    if (map[snakeX + snakeDX, snakeY + snakeDY] == figurePotion) // здесь косяк
                     {
-                        int positionHunterX = rand.Next(1, map.GetLength(0) - 2);
-                        int positionHunterY = rand.Next(1, map.GetLength(1) - 2);
-                        map[positionHunterX, positionHunterY] = figureHunter;
-                        Console.SetCursorPosition(positionHunterY, positionHunterX);
-                        Console.Write(map[positionHunterX,positionHunterY]);
-                        map[positionCharX, positionCharY] = ' ';
-                        positionCharX = rand.Next(1, map.GetLength(0) - 2);
-                        positionCharY = rand.Next(1, map.GetLength(1) - 2);
-                        map[positionCharX, positionCharY] = figureEat;
-                        Console.SetCursorPosition(positionCharY, positionCharX);
-                        Console.Write(map[positionCharX, positionCharY]);
-                        eatNumber++;
-                        if (eatNumber % 15 == 0)
+                        GenerateCoordinate(ref positionHunterX,ref positionHunterY, figureHunter, map); // Эта функция в дебаге рисует, в программе нет.
+                        //map[positionHunterX, positionHunterY] = figureHunter;
+                        //Console.SetCursorPosition(positionHunterY, positionHunterX);
+                        //Console.Write(map[positionHunterX,positionHunterY]);
+                        map[positionPotionX, positionPotionY] = ' ';
+                        GenerateCoordinate(ref positionPotionX, ref positionPotionY, figurePotion, map); // Эта функция работает и в дебаге и в программе.
+                        
+
+                       
+                        //map[positionPotionX, positionPotionY] = figureEat;
+                        //Console.SetCursorPosition(positionPotionY, positionPotionX);
+                        //Console.Write(map[positionPotionX, positionPotionY]);
+
+                        potion++;
+                        if (potion % 15 == 0)
                         {
                             potionEnrage++;
                             Console.SetCursorPosition(0, 26);
@@ -130,7 +139,7 @@ namespace BraveNewWorld
                 System.Threading.Thread.Sleep(200);
 
                 Console.SetCursorPosition(0, 25);
-                Console.WriteLine($"Количество съеденной пищи :{eatNumber}");
+                Console.WriteLine($"Количество съеденной пищи :{potion}");
             }
         }
 
@@ -163,6 +172,16 @@ namespace BraveNewWorld
             }
 
             return map;
+        }
+
+        static void GenerateCoordinate (ref int x,ref int y, char figure, char[,] map) // функция рисует либо символ охотника либо символ подсказки
+        {
+            Random rand = new Random();
+            x = rand.Next(1, map.GetLength(0) - 2);
+            y = rand.Next(1, map.GetLength(1) - 2);
+            map[x, y] = figure;
+            Console.SetCursorPosition(y, x);
+            Console.Write(map[x, y]);
         }
     }
 }
