@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace BraveNewWorld
@@ -18,12 +14,10 @@ namespace BraveNewWorld
             char figureHunter = '!';
             int potion = 0;
             int positionHeroX, positionHeroY;
-            int HeroDX = 0; 
-            int HeroDY = 1;
-            int positionHunterX = 0;
-            int positionHunterY = 0;
-            int positionPotionX = 0;
-            int positionPotionY = 0;
+            int positionHunterX, positionHunterY;
+            int positionPotionX, positionPotionY;
+            int heroDX = 0; 
+            int heroDY = 1;
             int numberPotionHints = 15;
             bool plaing = true;
             int potionEnrage = 0;
@@ -37,13 +31,13 @@ namespace BraveNewWorld
 
             Console.Clear();
 
-            Random rand = new Random();
+            Random random = new Random();
 
             char[,] map = ReadMap("map1", out positionHeroX, out positionHeroY);
 
             DrawMap(map);
 
-            DrawFigure(rand, ref positionPotionX, ref positionPotionY, figurePotion, map); 
+            GenerateAndDraw(random, out positionPotionX, out positionPotionY, figurePotion, map); 
 
             while (plaing)
             {
@@ -53,14 +47,27 @@ namespace BraveNewWorld
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
 
-                    Move(key, ref HeroDX, ref HeroDY,ref potionEnrage);
+                    Move(key, ref heroDX, ref heroDY,ref potionEnrage);
+
+                    if (key.Key == ConsoleKey.S)
+                    {
+                        if (potionEnrage > 0)
+                        {
+                            potionEnrage--;
+
+                            DrawHints(ref potionEnrage);
+
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                    }
                 }
 
-                if (map[positionHeroX + HeroDX, positionHeroY + HeroDY] == '#' || map[positionHeroX + HeroDX, positionHeroY + HeroDY] == figureHunter)
+                if (map[positionHeroX + heroDX, positionHeroY + heroDY] == '#' 
+                    || map[positionHeroX + heroDX, positionHeroY + heroDY] == figureHunter)
                 {
                     if (Console.ForegroundColor == ConsoleColor.Red && maxKillHunter > 0)
                     {
-                        ContinueGame(ref positionHeroX, ref positionHeroY, HeroDX, HeroDY, ref potion, ref maxKillHunter, map); 
+                        KillHunter(ref positionHeroX, ref positionHeroY, heroDX, heroDY, ref potion, ref maxKillHunter, map); 
                     }
                     else
                     {
@@ -70,13 +77,13 @@ namespace BraveNewWorld
                 }
                 else
                 {
-                    if (map[positionHeroX + HeroDX, positionHeroY + HeroDY] == figurePotion) 
+                    if (map[positionHeroX + heroDX, positionHeroY + heroDY] == figurePotion) 
                     {
-                        DrawFigure(rand, ref positionHunterX, ref positionHunterY, figureHunter, map); 
+                        GenerateAndDraw(random, out positionHunterX, out positionHunterY, figureHunter, map); 
 
                         map[positionPotionX, positionPotionY] = ' ';
 
-                        DrawFigure(rand, ref positionPotionX, ref positionPotionY, figurePotion, map); 
+                        GenerateAndDraw(random, out positionPotionX, out positionPotionY, figurePotion, map); 
 
                         potion++;
 
@@ -88,7 +95,7 @@ namespace BraveNewWorld
                         }
                     }
 
-                    ChangeCoordinate(ref positionHeroX, ref positionHeroY, HeroDX, HeroDY); 
+                    ChangeCoordinate(ref positionHeroX, ref positionHeroY, heroDX, heroDY); 
 
                     DrawHero(positionHeroY, positionHeroX, figureHero);
                 }
@@ -130,10 +137,10 @@ namespace BraveNewWorld
             return map;
         }
 
-        static void DrawFigure(Random rand, ref int x, ref int y, char figure, char[,] map) // отрисовывает фигуру охотника или подсказки
+        static void GenerateAndDraw(Random random, out int x, out int y, char figure, char[,] map) 
         {
-            x = rand.Next(1, map.GetLength(0) - 2);
-            y = rand.Next(1, map.GetLength(1) - 2);
+            x = random.Next(1, map.GetLength(0) - 2);
+            y = random.Next(1, map.GetLength(1) - 2);
             map[x, y] = figure;
 
             Console.SetCursorPosition(y, x);
@@ -156,27 +163,16 @@ namespace BraveNewWorld
                 case ConsoleKey.RightArrow:
                     x = 0; y = 1;
                     break;
-                case ConsoleKey.S:
-
-                    if (potionEnrage > 0)
-                    {
-                        potionEnrage--;
-
-                        DrawHints(ref potionEnrage);
-
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    break;
             }
         }
 
-        static void DrawHero(int y, int x, char figure)  // отрисовывает фигуру героя
+        static void DrawHero(int y, int x, char figure) 
         {
             Console.SetCursorPosition(y, x);
             Console.Write(figure);
         }
 
-        static void ChangeCoordinate(ref int x,ref int y,int dX, int dY) // изменяет координаты фигуры
+        static void ChangeCoordinate(ref int x,ref int y,int dX, int dY) 
         {
             Console.SetCursorPosition(y, x);
             Console.Write(" ");
@@ -184,7 +180,7 @@ namespace BraveNewWorld
             y += dY;
         }
 
-        static void ContinueGame(ref int x , ref int y, int dX, int dY,ref int potion,ref int maxKillHunter, char[,] map) // подолжает игру, если игрок под бешенством
+        static void KillHunter(ref int x , ref int y, int dX, int dY,ref int potion,ref int maxKillHunter, char[,] map) 
         {
             map[x + dX, y + dY] = ' ';
             maxKillHunter--;
@@ -192,15 +188,20 @@ namespace BraveNewWorld
 
             if (maxKillHunter == 0)
             {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                maxKillHunter = 2;
+                UnplugEnrage(ref maxKillHunter);
             }
         }
 
-        static void DrawHints(ref int potionEnrage) // отрисовывает подсказку о количесте зелей в сумке
+        static void DrawHints(ref int potionEnrage)
         {
             Console.SetCursorPosition(0, 26);
             Console.Write($"Зелей в сумке : {potionEnrage}");
+        }
+
+        static void UnplugEnrage(ref int maxKillHunter)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            maxKillHunter = 2;
         }
     }
 }
